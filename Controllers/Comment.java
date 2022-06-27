@@ -21,7 +21,7 @@ public interface Comment {
 
     default String insertCommentUpvote(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
-            return newData.get("commnetID").equals(data.get("commnetID"));
+            return newData.get("id").equals(data.get("id"));
         };
 
         AbstractMap.SimpleEntry<String, String> entry = new AbstractMap.SimpleEntry<>("upvotes", data.get("upvotes"));
@@ -32,7 +32,7 @@ public interface Comment {
 
     default String insertCommentDownvote(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
-            return newData.get("commnetID").equals(data.get("commnetID"));
+            return newData.get("id").equals(data.get("id"));
         };
 
         AbstractMap.SimpleEntry<String, String> entry = new AbstractMap.SimpleEntry<>("downvotes", data.get("downvotes"));
@@ -43,7 +43,7 @@ public interface Comment {
 
     default String updateCommentDetail(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
-            return newData.get("commnetID").equals(data.get("commnetID"));
+            return newData.get("id").equals(data.get("id"));
         };
 
         Database.getDatabase().getTable("CommentsDetail").update(data, condition);
@@ -52,7 +52,7 @@ public interface Comment {
 
     default String updateCommentVotes(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
-            return newData.get("commnetID").equals(data.get("commnetID"));
+            return newData.get("id").equals(data.get("id"));
         };
 
         Database.getDatabase().getTable("CommentsVotes").update(data, condition);
@@ -61,7 +61,7 @@ public interface Comment {
 
     default String deleteComment(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
-            return newData.get("commnetID").equals(data.get("commnetID"));
+            return newData.get("id").equals(data.get("id"));
         };
 
         Database.getDatabase().getTable("CommentsDetail").delete(condition);
@@ -71,7 +71,7 @@ public interface Comment {
 
     default String deleteCommentUpvote(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
-            return newData.get("commnetID").equals(data.get("commnetID"));
+            return newData.get("id").equals(data.get("id"));
         };
         AbstractMap.SimpleEntry<String, String> entry = new AbstractMap.SimpleEntry<>("upvotes", data.get("upvotes"));
 
@@ -81,7 +81,7 @@ public interface Comment {
 
     default String deleteCommentDownvote(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
-            return newData.get("commnetID").equals(data.get("commnetID"));
+            return newData.get("id").equals(data.get("id"));
         };
         AbstractMap.SimpleEntry<String, String> entry = new AbstractMap.SimpleEntry<>("downvotes", data.get("downvotes"));
 
@@ -91,7 +91,7 @@ public interface Comment {
 
     default String getComment(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
-            return newData.get("commnetID").equals(data.get("commnetID"));
+            return newData.get("id").equals(data.get("id"));
         };
         Map<String, String> result = Database.getDatabase().getTable("CommentsDetail").selectFirst(condition);
         result = Convertor.merge(result, Database.getDatabase().getTable("CommentsVotes").selectFirst(condition));
@@ -101,7 +101,7 @@ public interface Comment {
 
     default String getCommentUpvotes(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
-            return newData.get("commnetID").equals(data.get("commnetID"));
+            return newData.get("id").equals(data.get("id"));
         };
         Map<String, String> votes = Database.getDatabase().getTable("CommentsVotes").selectFirst(condition);
 
@@ -113,7 +113,7 @@ public interface Comment {
 
     default String getCommentDownvotes(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
-            return newData.get("commnetID").equals(data.get("commnetID"));
+            return newData.get("id").equals(data.get("id"));
         };
         Map<String, String> votes = Database.getDatabase().getTable("CommentsVotes").selectFirst(condition);
 

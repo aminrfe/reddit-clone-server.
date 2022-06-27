@@ -26,7 +26,7 @@ public interface Post {
 
     default String insertPostUpvote(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
-            return newData.get("postID").equals(data.get("postID"));
+            return newData.get("id").equals(data.get("id"));
         };
 
         AbstractMap.SimpleEntry<String, String> entry = new AbstractMap.SimpleEntry<>("upvotes", data.get("upvotes"));
@@ -37,7 +37,7 @@ public interface Post {
 
     default String insertPostDownvote(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
-            return newData.get("postID").equals(data.get("postID"));
+            return newData.get("id").equals(data.get("id"));
         };
 
         AbstractMap.SimpleEntry<String, String> entry = new AbstractMap.SimpleEntry<>("downvotes", data.get("downvotes"));
@@ -48,7 +48,7 @@ public interface Post {
 
     default String insertPostComment(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
-            return newData.get("postID").equals(data.get("postID"));
+            return newData.get("id").equals(data.get("id"));
         };
 
         AbstractMap.SimpleEntry<String, String> entry = new AbstractMap.SimpleEntry<>("comments", data.get("comments"));
