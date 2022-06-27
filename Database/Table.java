@@ -41,6 +41,29 @@ public class Table {
         }
     }
 
+    public void insert(AbstractMap.SimpleEntry<String, String> data, Predicate<Map<String, String>> condition) {
+        try {
+            List<String> lines = Files.readAllLines(path);
+            for (int i = 0; i < lines.size(); i++) {
+                if (condition.test(Convertor.stringToMap(lines.get(i)))) {
+                    Map<String, String> mapLine = Convertor.stringToMap(lines.get(i));
+                    List<String> elements = new ArrayList<>(Convertor.stringToList(mapLine.get(data.getKey())));
+                    elements.add(data.getValue());
+
+                    if (elements.contains("-")) {
+                        elements.remove("-");
+                    }
+                    mapLine.put(data.getKey(), Convertor.listToString(elements));
+
+                    lines.set(i, Convertor.mapToString(mapLine));
+                }
+            }
+            Files.write(path, lines);
+        } catch (IOException e) {
+            System.err.println("Could not delete data");
+        }
+    }
+
     public void update(Map<String, String> data, Predicate<Map<String, String>> condition) {
         try {
             List<String> lines = Files.readAllLines(path);
@@ -64,6 +87,30 @@ public class Table {
             for (int i = 0; i < lines.size(); i++) {
                 if (condition.test(Convertor.stringToMap(lines.get(i)))) {
                     lines.remove(i);
+                }
+            }
+            Files.write(path, lines);
+        } catch (IOException e) {
+            System.err.println("Could not delete data");
+        }
+    }
+
+    public void delete(AbstractMap.SimpleEntry<String, String> data, Predicate<Map<String, String>> condition) {
+        try {
+            List<String> lines = Files.readAllLines(path);
+            for (int i = 0; i < lines.size(); i++) {
+                if (condition.test(Convertor.stringToMap(lines.get(i)))) {
+                    Map<String, String> mapLine = Convertor.stringToMap(lines.get(i));
+                    List<String> elements = new ArrayList<>(Convertor.stringToList(mapLine.get(data.getKey())));
+                    elements.remove(data.getValue());
+
+                    if (elements.size() == 0) {
+                        elements.add("-");
+                    }
+
+                    mapLine.put(data.getKey(), Convertor.listToString(elements));
+
+                    lines.set(i, Convertor.mapToString(mapLine));
                 }
             }
             Files.write(path, lines);

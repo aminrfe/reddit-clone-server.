@@ -10,20 +10,42 @@ import Request.Convertor;
 public interface User {
 
     static String insertUser(Map<String, String> data) {
-        Database.getDatabase().getTable("UserAccounts").insert(data);
+        Database.getDatabase().getTable("UsersAccount").insert(data);
 
         Map<String, String> emptyPosts = new HashMap<>();
         emptyPosts.put("username", data.get("username"));
         emptyPosts.put("posts", "-");
         emptyPosts.put("savedPosts", "-");
-        Database.getDatabase().getTable("UserPosts").insert(emptyPosts);
+        Database.getDatabase().getTable("UsersPosts").insert(emptyPosts);
 
         Map<String, String> emptyForums = new HashMap<>();
         emptyForums.put("username", data.get("username"));
         emptyForums.put("followedForums", "-");
         emptyForums.put("favoriteForums", "-");
-        Database.getDatabase().getTable("UserForums").insert(emptyForums);
+        Database.getDatabase().getTable("UsersForums").insert(emptyForums);
 
+        return "Done";
+    }
+
+    static String insertUserPost(Map<String, String> data) {
+        Predicate<Map<String, String>> condition = (newData) -> {
+            return newData.get("username").equals(data.get("username"));
+        };
+
+        AbstractMap.SimpleEntry<String, String> entry = new AbstractMap.SimpleEntry<>("posts", data.get("posts"));
+
+        Database.getDatabase().getTable("UsersPosts").insert(entry, condition);
+        return "Done";
+    }
+
+    static String insertUserForum(Map<String, String> data) {
+        Predicate<Map<String, String>> condition = (newData) -> {
+            return newData.get("username").equals(data.get("username"));
+        };
+
+        AbstractMap.SimpleEntry<String, String> entry = new AbstractMap.SimpleEntry<>("followedForums", data.get("followedForums"));
+
+        Database.getDatabase().getTable("UsersForums").insert(entry, condition);
         return "Done";
     }
 
@@ -32,7 +54,7 @@ public interface User {
             return newData.get("username").equals(data.get("username"));
         };
 
-        Database.getDatabase().getTable("UserAccounts").update(data, condition);
+        Database.getDatabase().getTable("UsersAccount").update(data, condition);
         return "Done";
     }
 
@@ -41,7 +63,7 @@ public interface User {
             return newData.get("username").equals(data.get("username"));
         };
 
-        Database.getDatabase().getTable("UserPosts").update(data, condition);
+        Database.getDatabase().getTable("UsersPosts").update(data, condition);
         return "Done";
     }
 
@@ -50,34 +72,58 @@ public interface User {
             return newData.get("username").equals(data.get("username"));
         };
 
-        Database.getDatabase().getTable("UserForums").update(data, condition);
+        Database.getDatabase().getTable("UsersForums").update(data, condition);
         return "Done";
     }
 
-    static String deleteUserAccount(Map<String, String> data) {
+    static String deleteUser(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
             return newData.get("username").equals(data.get("username"));
         };
 
-        Database.getDatabase().getTable("UserAccounts").delete(condition);
+        Database.getDatabase().getTable("UsersAccount").delete(condition);
+        Database.getDatabase().getTable("UsersPosts").delete(condition);
+        Database.getDatabase().getTable("UsersForums").delete(condition);
         return "Done";
     }
 
-    static String deleteUserPosts(Map<String, String> data) {
+    static String deleteUserPost(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
             return newData.get("username").equals(data.get("username"));
         };
+        AbstractMap.SimpleEntry<String, String> entry = new AbstractMap.SimpleEntry<>("posts", data.get("posts"));
 
-        Database.getDatabase().getTable("UserPosts").delete(condition);
+        Database.getDatabase().getTable("UsersPosts").delete(entry, condition);
         return "Done";
     }
 
-    static String deleteUserForums(Map<String, String> data) {
+    static String deleteUserSavedPost(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
             return newData.get("username").equals(data.get("username"));
         };
+        AbstractMap.SimpleEntry<String, String> entry = new AbstractMap.SimpleEntry<>("savedPosts", data.get("savedPosts"));
 
-        Database.getDatabase().getTable("UserForums").delete(condition);
+        Database.getDatabase().getTable("UsersPosts").delete(entry, condition);
+        return "Done";
+    }
+
+    static String deleteUserForum(Map<String, String> data) {
+        Predicate<Map<String, String>> condition = (newData) -> {
+            return newData.get("username").equals(data.get("username"));
+        };
+        AbstractMap.SimpleEntry<String, String> entry = new AbstractMap.SimpleEntry<>("followedForums", data.get("followedForums"));
+
+        Database.getDatabase().getTable("UsersForums").delete(entry, condition);
+        return "Done";
+    }
+
+    static String deleteUserFavoriteForum(Map<String, String> data) {
+        Predicate<Map<String, String>> condition = (newData) -> {
+            return newData.get("username").equals(data.get("username"));
+        };
+        AbstractMap.SimpleEntry<String, String> entry = new AbstractMap.SimpleEntry<>("favoriteForums", data.get("favoriteForums"));
+
+        Database.getDatabase().getTable("UsersForums").delete(entry, condition);
         return "Done";
     }
 
@@ -86,7 +132,7 @@ public interface User {
             return newData.get("username").equals(data.get("username"));
         };
 
-        return Convertor.mapToString(Database.getDatabase().getTable("UserAccounts").selectFirst(condition));
+        return Convertor.mapToString(Database.getDatabase().getTable("UsersAccount").selectFirst(condition));
     }
 
     static String getUserPosts(Map<String, String> data) {
@@ -94,7 +140,7 @@ public interface User {
             return newData.get("username").equals(data.get("username"));
         };
 
-        Map<String, String> posts = Database.getDatabase().getTable("UserPosts").selectFirst(condition);
+        Map<String, String> posts = Database.getDatabase().getTable("UsersPosts").selectFirst(condition);
 
         if (posts.get("posts").equals("-")) {
             return "-";
@@ -114,7 +160,7 @@ public interface User {
             return newData.get("username").equals(data.get("username"));
         };
 
-        Map<String, String> posts = Database.getDatabase().getTable("UserPosts").selectFirst(condition);
+        Map<String, String> posts = Database.getDatabase().getTable("UsersPosts").selectFirst(condition);
 
         if (posts.get("savedPosts").equals("-")) {
             return "-";
@@ -133,7 +179,7 @@ public interface User {
             return newData.get("username").equals(data.get("username"));
         };
 
-        Map<String, String> forums = Database.getDatabase().getTable("UserForums").selectFirst(condition);
+        Map<String, String> forums = Database.getDatabase().getTable("UsersForums").selectFirst(condition);
 
         if (forums.get("followedForums").equals("-")) {
             return "-";
@@ -152,7 +198,7 @@ public interface User {
             return newData.get("username").equals(data.get("username"));
         };
 
-        Map<String, String> forums = Database.getDatabase().getTable("UserForums").selectFirst(condition);
+        Map<String, String> forums = Database.getDatabase().getTable("UsersForums").selectFirst(condition);
 
         if (forums.get("favoriteForums").equals("-")) {
             return "-";

@@ -56,7 +56,7 @@ public class Convertor {
         return list;
     }
 
-    public static String listToString(ArrayList<String> list) {
+    public static String listToString(List<String> list) {
         StringBuilder sb = new StringBuilder();
         for (String element : list) {
             sb.append(element);
