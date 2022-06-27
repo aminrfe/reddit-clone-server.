@@ -59,7 +59,7 @@ public interface Post {
 
     default String updatePostDetail(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
-            return newData.get("id").equals(data.get("id"));
+            return newData.get("postID").equals(data.get("postID"));
         };
 
         Database.getDatabase().getTable("PostsDetail").update(data, condition);
@@ -68,7 +68,7 @@ public interface Post {
 
     default String updatePostVotes(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
-            return newData.get("id").equals(data.get("id"));
+            return newData.get("postID").equals(data.get("postID"));
         };
 
         Database.getDatabase().getTable("PostsVotes").update(data, condition);
@@ -77,7 +77,7 @@ public interface Post {
 
     default String updatePostComments(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
-            return newData.get("id").equals(data.get("id"));
+            return newData.get("postID").equals(data.get("postID"));
         };
 
         Database.getDatabase().getTable("PostsComments").update(data, condition);
@@ -86,7 +86,7 @@ public interface Post {
 
     default String deletePost(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
-            return newData.get("id").equals(data.get("id"));
+            return newData.get("postID").equals(data.get("postID"));
         };
 
         Database.getDatabase().getTable("PostsDetail").delete(condition);
@@ -97,7 +97,7 @@ public interface Post {
 
     default String deletePostUpvote(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
-            return newData.get("id").equals(data.get("id"));
+            return newData.get("postID").equals(data.get("postID"));
         };
         AbstractMap.SimpleEntry<String, String> entry = new AbstractMap.SimpleEntry<>("upvotes", data.get("upvotes"));
 
@@ -107,7 +107,7 @@ public interface Post {
 
     default String deletePostDownvote(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
-            return newData.get("id").equals(data.get("id"));
+            return newData.get("postID").equals(data.get("postID"));
         };
         AbstractMap.SimpleEntry<String, String> entry = new AbstractMap.SimpleEntry<>("downvotes", data.get("downvotes"));
 
@@ -117,7 +117,7 @@ public interface Post {
 
     default String deletePostComment(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
-            return newData.get("id").equals(data.get("id"));
+            return newData.get("postID").equals(data.get("postID"));
         };
         AbstractMap.SimpleEntry<String, String> entry = new AbstractMap.SimpleEntry<>("comments", data.get("comments"));
 
@@ -127,7 +127,7 @@ public interface Post {
     
     default String getPost(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
-            return newData.get("id").equals(data.get("id"));
+            return newData.get("postID").equals(data.get("postID"));
         };
         Map<String, String> result = Database.getDatabase().getTable("PostsDetail").selectFirst(condition);
         result = Convertor.merge(result, Database.getDatabase().getTable("PostsVotes").selectFirst(condition));
@@ -138,7 +138,7 @@ public interface Post {
 
     default String getPostUpvotes(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
-            return newData.get("id").equals(data.get("id"));
+            return newData.get("postID").equals(data.get("postID"));
         };
         Map<String, String> votes = Database.getDatabase().getTable("PostsVotes").selectFirst(condition);
 
@@ -150,7 +150,7 @@ public interface Post {
 
     default String getPostDownvotes(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
-            return newData.get("id").equals(data.get("id"));
+            return newData.get("postID").equals(data.get("postID"));
         };
         Map<String, String> votes = Database.getDatabase().getTable("PostsVotes").selectFirst(condition);
 
@@ -161,7 +161,7 @@ public interface Post {
 
     default String getPostComments(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
-            return newData.get("id").equals(data.get("id"));
+            return newData.get("postID").equals(data.get("postID"));
         };
 
         Map<String, String> comments = Database.getDatabase().getTable("PostsComments").selectFirst(condition);
@@ -173,8 +173,8 @@ public interface Post {
         
         return commentsIds.stream().map(id -> {
             Map<String, String> idMap = new HashMap<>();
-            idMap.put("id", id);
-            return new Controller().getPost(idMap);
+            idMap.put("commentID", id);
+            return new Controller().getComment(idMap);
         }).collect(Collectors.joining("\n"));
     }
 }
