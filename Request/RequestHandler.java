@@ -38,7 +38,7 @@ public class RequestHandler extends Thread {
 
             Method method = Controller.class.getMethod(command, Map.class);
 
-            send((String) method.invoke(null, data));
+            send((String) method.invoke(new Controller(), data));
 
         } catch (Exception e) {
             e.printStackTrace();

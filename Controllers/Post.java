@@ -9,7 +9,7 @@ import Request.Convertor;
 
 public interface Post {
 
-    static String insertPost(Map<String, String> data) {
+    default String insertPost(Map<String, String> data) {
         Database.getDatabase().getTable("PostsDetail").insert(data);
 
         Map<String, String> emptyVotes = new HashMap<>();
@@ -24,7 +24,7 @@ public interface Post {
         return "Done";
     }
 
-    static String insertPostUpvote(Map<String, String> data) {
+    default String insertPostUpvote(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
             return newData.get("postID").equals(data.get("postID"));
         };
@@ -35,7 +35,7 @@ public interface Post {
         return "Done";
     }
 
-    static String insertPostDownvote(Map<String, String> data) {
+    default String insertPostDownvote(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
             return newData.get("postID").equals(data.get("postID"));
         };
@@ -46,7 +46,7 @@ public interface Post {
         return "Done";
     }
 
-    static String insertPostComment(Map<String, String> data) {
+    default String insertPostComment(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
             return newData.get("postID").equals(data.get("postID"));
         };
@@ -57,7 +57,7 @@ public interface Post {
         return "Done";
     }
 
-    static String updatePostDetail(Map<String, String> data) {
+    default String updatePostDetail(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
             return newData.get("id").equals(data.get("id"));
         };
@@ -66,7 +66,7 @@ public interface Post {
         return "Done";
     }
 
-    static String updatePostVotes(Map<String, String> data) {
+    default String updatePostVotes(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
             return newData.get("id").equals(data.get("id"));
         };
@@ -75,7 +75,7 @@ public interface Post {
         return "Done";
     }
 
-    static String updatePostComments(Map<String, String> data) {
+    default String updatePostComments(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
             return newData.get("id").equals(data.get("id"));
         };
@@ -84,7 +84,7 @@ public interface Post {
         return "Done";
     }
 
-    static String deletePost(Map<String, String> data) {
+    default String deletePost(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
             return newData.get("id").equals(data.get("id"));
         };
@@ -95,7 +95,7 @@ public interface Post {
         return "Done";
     }
 
-    static String deletePostUpvote(Map<String, String> data) {
+    default String deletePostUpvote(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
             return newData.get("id").equals(data.get("id"));
         };
@@ -105,7 +105,7 @@ public interface Post {
         return "Done";
     }
 
-    static String deletePostDownvote(Map<String, String> data) {
+    default String deletePostDownvote(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
             return newData.get("id").equals(data.get("id"));
         };
@@ -115,7 +115,7 @@ public interface Post {
         return "Done";
     }
 
-    static String deletePostComment(Map<String, String> data) {
+    default String deletePostComment(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
             return newData.get("id").equals(data.get("id"));
         };
@@ -125,7 +125,7 @@ public interface Post {
         return "Done";
     }
     
-    static String getPost(Map<String, String> data) {
+    default String getPost(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
             return newData.get("id").equals(data.get("id"));
         };
@@ -136,7 +136,7 @@ public interface Post {
         return Convertor.mapToString(result);
     }
 
-    static String getPostUpvotes(Map<String, String> data) {
+    default String getPostUpvotes(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
             return newData.get("id").equals(data.get("id"));
         };
@@ -148,7 +148,7 @@ public interface Post {
         return Convertor.mapToString(result);
     }
 
-    static String getPostDownvotes(Map<String, String> data) {
+    default String getPostDownvotes(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
             return newData.get("id").equals(data.get("id"));
         };
@@ -159,7 +159,7 @@ public interface Post {
         return Convertor.mapToString(result);
     }
 
-    static String getPostComments(Map<String, String> data) {
+    default String getPostComments(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
             return newData.get("id").equals(data.get("id"));
         };
@@ -174,7 +174,7 @@ public interface Post {
         return commentsIds.stream().map(id -> {
             Map<String, String> idMap = new HashMap<>();
             idMap.put("id", id);
-            return Post.getPost(idMap);
+            return new Controller().getPost(idMap);
         }).collect(Collectors.joining("\n"));
     }
 }

@@ -9,7 +9,7 @@ import Request.Convertor;
 
 public interface User {
 
-    static String insertUser(Map<String, String> data) {
+    default String insertUser(Map<String, String> data) {
         Database.getDatabase().getTable("UsersAccount").insert(data);
 
         Map<String, String> emptyPosts = new HashMap<>();
@@ -27,7 +27,7 @@ public interface User {
         return "Done";
     }
 
-    static String insertUserPost(Map<String, String> data) {
+    default String insertUserPost(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
             return newData.get("username").equals(data.get("username"));
         };
@@ -38,7 +38,7 @@ public interface User {
         return "Done";
     }
 
-    static String insertUserForum(Map<String, String> data) {
+    default String insertUserForum(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
             return newData.get("username").equals(data.get("username"));
         };
@@ -49,7 +49,7 @@ public interface User {
         return "Done";
     }
 
-    static String updateUserAccount(Map<String, String> data) {
+    default String updateUserAccount(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
             return newData.get("username").equals(data.get("username"));
         };
@@ -58,7 +58,7 @@ public interface User {
         return "Done";
     }
 
-    static String updateUserPosts(Map<String, String> data) {
+    default String updateUserPosts(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
             return newData.get("username").equals(data.get("username"));
         };
@@ -67,7 +67,7 @@ public interface User {
         return "Done";
     }
 
-    static String updateUserForums(Map<String, String> data) {
+    default String updateUserForums(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
             return newData.get("username").equals(data.get("username"));
         };
@@ -76,7 +76,7 @@ public interface User {
         return "Done";
     }
 
-    static String deleteUser(Map<String, String> data) {
+    default String deleteUser(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
             return newData.get("username").equals(data.get("username"));
         };
@@ -87,7 +87,7 @@ public interface User {
         return "Done";
     }
 
-    static String deleteUserPost(Map<String, String> data) {
+    default String deleteUserPost(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
             return newData.get("username").equals(data.get("username"));
         };
@@ -97,7 +97,7 @@ public interface User {
         return "Done";
     }
 
-    static String deleteUserSavedPost(Map<String, String> data) {
+    default String deleteUserSavedPost(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
             return newData.get("username").equals(data.get("username"));
         };
@@ -107,7 +107,7 @@ public interface User {
         return "Done";
     }
 
-    static String deleteUserForum(Map<String, String> data) {
+    default String deleteUserForum(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
             return newData.get("username").equals(data.get("username"));
         };
@@ -117,7 +117,7 @@ public interface User {
         return "Done";
     }
 
-    static String deleteUserFavoriteForum(Map<String, String> data) {
+    default String deleteUserFavoriteForum(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
             return newData.get("username").equals(data.get("username"));
         };
@@ -127,7 +127,7 @@ public interface User {
         return "Done";
     }
 
-    static String getUserAccount(Map<String, String> data) {
+    default String getUserAccount(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
             return newData.get("username").equals(data.get("username"));
         };
@@ -135,7 +135,7 @@ public interface User {
         return Convertor.mapToString(Database.getDatabase().getTable("UsersAccount").selectFirst(condition));
     }
 
-    static String getUserPosts(Map<String, String> data) {
+    default String getUserPosts(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
             return newData.get("username").equals(data.get("username"));
         };
@@ -150,12 +150,12 @@ public interface User {
         return postsIds.stream().map(id -> {
             Map<String, String> idMap = new HashMap<>();
             idMap.put("id", id);
-            return Post.getPost(idMap);
+            return new Controller().getPost(idMap);
         }).collect(Collectors.joining("\n"));
     }
 
 
-    static String getUserSavedPosts(Map<String, String> data) {
+    default String getUserSavedPosts(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
             return newData.get("username").equals(data.get("username"));
         };
@@ -170,46 +170,46 @@ public interface User {
         return postsIds.stream().map(id -> {
             Map<String, String> idMap = new HashMap<>();
             idMap.put("id", id);
-            return Post.getPost(idMap);
+            return new Controller().getPost(idMap);
         }).collect(Collectors.joining("\n"));
     }
 
-    static String getUserFollowedForums(Map<String, String> data) {
-        Predicate<Map<String, String>> condition = (newData) -> {
-            return newData.get("username").equals(data.get("username"));
-        };
+    // default String getUserFollowedForums(Map<String, String> data) {
+    //     Predicate<Map<String, String>> condition = (newData) -> {
+    //         return newData.get("username").equals(data.get("username"));
+    //     };
 
-        Map<String, String> forums = Database.getDatabase().getTable("UsersForums").selectFirst(condition);
+    //     Map<String, String> forums = Database.getDatabase().getTable("UsersForums").selectFirst(condition);
 
-        if (forums.get("followedForums").equals("-")) {
-            return "-";
-        }
-        List<String> forumsNames = Convertor.stringToList(forums.get("followedForums"));
+    //     if (forums.get("followedForums").equals("-")) {
+    //         return "-";
+    //     }
+    //     List<String> forumsNames = Convertor.stringToList(forums.get("followedForums"));
         
-        return forumsNames.stream().map(name -> {
-            Map<String, String> nameMap = new HashMap<>();
-            nameMap.put("name", name);
-            return Forum.getForum(nameMap);
-        }).collect(Collectors.joining("\n"));
-    }
+    //     return forumsNames.stream().map(name -> {
+    //         Map<String, String> nameMap = new HashMap<>();
+    //         nameMap.put("name", name);
+    //         return Forum.getForum(nameMap);
+    //     }).collect(Collectors.joining("\n"));
+    // }
 
-    static String getUserFavoriteForums(Map<String, String> data) {
-        Predicate<Map<String, String>> condition = (newData) -> {
-            return newData.get("username").equals(data.get("username"));
-        };
+    // default String getUserFavoriteForums(Map<String, String> data) {
+    //     Predicate<Map<String, String>> condition = (newData) -> {
+    //         return newData.get("username").equals(data.get("username"));
+    //     };
 
-        Map<String, String> forums = Database.getDatabase().getTable("UsersForums").selectFirst(condition);
+    //     Map<String, String> forums = Database.getDatabase().getTable("UsersForums").selectFirst(condition);
 
-        if (forums.get("favoriteForums").equals("-")) {
-            return "-";
-        }
-        List<String> forumsNames = Convertor.stringToList(forums.get("favoriteForums"));
+    //     if (forums.get("favoriteForums").equals("-")) {
+    //         return "-";
+    //     }
+    //     List<String> forumsNames = Convertor.stringToList(forums.get("favoriteForums"));
 
-        return forumsNames.stream().map(name -> {
-            Map<String, String> nameMap = new HashMap<>();
-            nameMap.put("name", name);
-            return Forum.getForum(nameMap);
-        }).collect(Collectors.joining("\n"));
-    }
+    //     return forumsNames.stream().map(name -> {
+    //         Map<String, String> nameMap = new HashMap<>();
+    //         nameMap.put("name", name);
+    //         return Forum.getForum(nameMap);
+    //     }).collect(Collectors.joining("\n"));
+    // }
 
 }

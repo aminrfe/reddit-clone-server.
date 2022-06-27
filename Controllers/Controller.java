@@ -1,3 +1,3 @@
 package Controllers;
 
-public interface Controller extends User, Forum, Post, Comment {}
+public class Controller implements User, Forum, Post, Comment {}
