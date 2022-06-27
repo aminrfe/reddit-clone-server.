@@ -2,8 +2,11 @@ package Request;
 
 import java.io.*;
 import java.net.*;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
+
+import Controllers.Controller;
+
+import java.lang.reflect.*;
 
 import Database.Database;
 
@@ -36,16 +39,9 @@ public class RequestHandler extends Thread {
             Map<String, String> data = Convertor.stringToMap(sc.nextLine());
             sc.close();
 
-            if (command.equals("sendMessage")) {
-                System.err.println("Sending message");
-                Database.getDatabase().getTable("Messages").insert(data);
-                System.err.println("Message sent");
-            }
+            Method method = Controller.class.getMethod(command, Map.class);
 
-            send("OK\n");
-
-        
-
+            send((String) method.invoke(null, data));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -75,7 +71,4 @@ public class RequestHandler extends Thread {
     void send(String s) throws IOException {
         dos.writeUTF(s);
     }
-
-
-    
 }

@@ -46,7 +46,7 @@ public class Convertor {
         return result;
     }
 
-    public static ArrayList<String> stringToArrayList(String data) {
+    public static ArrayList<String> stringToList(String data) {
         ArrayList<String> list = new ArrayList<String>();
         String[] elements = data.trim().split(",");
 
@@ -56,7 +56,7 @@ public class Convertor {
         return list;
     }
 
-    public static String arrayListToString(ArrayList<String> list) {
+    public static String listToString(ArrayList<String> list) {
         StringBuilder sb = new StringBuilder();
         for (String element : list) {
             sb.append(element);
