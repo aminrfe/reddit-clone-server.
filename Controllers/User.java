@@ -174,42 +174,42 @@ public interface User {
         }).collect(Collectors.joining("\n"));
     }
 
-    // default String getUserFollowedForums(Map<String, String> data) {
-    //     Predicate<Map<String, String>> condition = (newData) -> {
-    //         return newData.get("username").equals(data.get("username"));
-    //     };
+    default String getUserFollowedForums(Map<String, String> data) {
+        Predicate<Map<String, String>> condition = (newData) -> {
+            return newData.get("username").equals(data.get("username"));
+        };
 
-    //     Map<String, String> forums = Database.getDatabase().getTable("UsersForums").selectFirst(condition);
+        Map<String, String> forums = Database.getDatabase().getTable("UsersForums").selectFirst(condition);
 
-    //     if (forums.get("followedForums").equals("-")) {
-    //         return "-";
-    //     }
-    //     List<String> forumsNames = Convertor.stringToList(forums.get("followedForums"));
+        if (forums.get("followedForums").equals("-")) {
+            return "-";
+        }
+        List<String> forumsNames = Convertor.stringToList(forums.get("followedForums"));
         
-    //     return forumsNames.stream().map(name -> {
-    //         Map<String, String> nameMap = new HashMap<>();
-    //         nameMap.put("name", name);
-    //         return Forum.getForum(nameMap);
-    //     }).collect(Collectors.joining("\n"));
-    // }
+        return forumsNames.stream().map(name -> {
+            Map<String, String> nameMap = new HashMap<>();
+            nameMap.put("name", name);
+            return new Controller().getForum(nameMap);
+        }).collect(Collectors.joining("\n"));
+    }
 
-    // default String getUserFavoriteForums(Map<String, String> data) {
-    //     Predicate<Map<String, String>> condition = (newData) -> {
-    //         return newData.get("username").equals(data.get("username"));
-    //     };
+    default String getUserFavoriteForums(Map<String, String> data) {
+        Predicate<Map<String, String>> condition = (newData) -> {
+            return newData.get("username").equals(data.get("username"));
+        };
 
-    //     Map<String, String> forums = Database.getDatabase().getTable("UsersForums").selectFirst(condition);
+        Map<String, String> forums = Database.getDatabase().getTable("UsersForums").selectFirst(condition);
 
-    //     if (forums.get("favoriteForums").equals("-")) {
-    //         return "-";
-    //     }
-    //     List<String> forumsNames = Convertor.stringToList(forums.get("favoriteForums"));
+        if (forums.get("favoriteForums").equals("-")) {
+            return "-";
+        }
+        List<String> forumsNames = Convertor.stringToList(forums.get("favoriteForums"));
 
-    //     return forumsNames.stream().map(name -> {
-    //         Map<String, String> nameMap = new HashMap<>();
-    //         nameMap.put("name", name);
-    //         return Forum.getForum(nameMap);
-    //     }).collect(Collectors.joining("\n"));
-    // }
+        return forumsNames.stream().map(name -> {
+            Map<String, String> nameMap = new HashMap<>();
+            nameMap.put("name", name);
+            return new Controller().getForum(nameMap);
+        }).collect(Collectors.joining("\n"));
+    }
 
 }
