@@ -212,4 +212,21 @@ public interface User {
         }).collect(Collectors.joining("\n"));
     }
 
+    default String checkUser(Map<String, String> data) {
+        Predicate<Map<String, String>> condition = (newData) -> {
+            return newData.get("username").equals(data.get("username"));
+        };
+
+        Map<String, String> user = Database.getDatabase().getTable("UsersAccount").selectFirst(condition);
+        if (user.isEmpty()) {
+            return "NoUserFound";
+        } else {
+            if (user.get("password").equals(data.get("password"))) {
+                return "UserFound";
+            } else {
+                return "WrongPassword";
+            }
+        }
+    }
+
 }
