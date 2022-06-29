@@ -38,7 +38,9 @@ public class RequestHandler extends Thread {
 
             Method method = Controller.class.getMethod(command, Map.class);
 
-            send((String) method.invoke(new Controller(), data));
+            String response = (String) method.invoke(new Controller(), data);
+            System.err.println(response);
+            send(response);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -66,6 +68,7 @@ public class RequestHandler extends Thread {
     }
 
     void send(String s) throws IOException {
-        dos.writeUTF(s);
+        dos.writeBytes(s);
+        dos.flush();
     }
 }

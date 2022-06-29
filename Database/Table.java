@@ -29,7 +29,7 @@ public class Table {
             Files.createFile(path);
         } catch (IOException e) {
             System.err.println("Could not create file: " + name);
-            e.printStackTrace();
+            // e.printStackTrace();
         }
     }
 
@@ -37,6 +37,7 @@ public class Table {
         try {
             Files.writeString(path, Convertor.mapToString(data) + "\n", StandardOpenOption.APPEND);
         } catch (IOException e) {
+            e.printStackTrace();
             System.err.println("Could not insert data");
         }
     }
@@ -143,6 +144,19 @@ public class Table {
                     result = Convertor.stringToMap(line);
                     break;
                 }
+            }
+        } catch (IOException e) {
+            System.err.println("Could not select data");
+        }
+        return result;
+    }
+
+    public Map<String, String> selectLast() {
+        Map<String, String> result = new HashMap<>();
+        try {
+            List<String> lines = Files.readAllLines(path);
+            if (lines.size() > 1) {
+                result = Convertor.stringToMap(lines.get(lines.size() - 1));
             }
         } catch (IOException e) {
             System.err.println("Could not select data");

@@ -11,13 +11,14 @@ public class Convertor {
         
 
         for (String pair : pairs) {
-            int delIndex = pair.indexOf(":");
-            // System.err.println(pair);
-            // System.err.println(delIndex);
-            String key = pair.substring(0, delIndex);
-            String value = pair.substring(delIndex + 1);
+            if (pair.length() > 2 && pair.contains("::")) {
 
-            map.put(key, value);
+                int delIndex = pair.indexOf("::");
+                String key = pair.substring(0, delIndex);
+                String value = pair.substring(delIndex + 2);
+                
+                map.put(key, value);
+            }
         }
         return map;
     }
@@ -26,7 +27,7 @@ public class Convertor {
         StringBuilder sb = new StringBuilder();
         for (Map.Entry<String, String> entry : map.entrySet()) {
             sb.append(entry.getKey());
-            sb.append(":");
+            sb.append("::");
             sb.append(entry.getValue());
             sb.append("||");
         }
@@ -36,13 +37,13 @@ public class Convertor {
 
     public static Map<String, String> merge(Map<String, String> map1, Map<String, String> map2) {
         Map<String, String> result = new HashMap<String, String>();
-        map1.forEach((key, value) -> {
-            if (map2.containsKey(key)) {
-                result.put(key, map2.get(key));
-            } else {
-                result.put(key, value);
-            }
-        });
+        System.err.println(map2);
+        for (Map.Entry<String, String> entry : map1.entrySet()) {
+            result.put(entry.getKey(), entry.getValue());
+        }
+        for (Map.Entry<String, String> entry : map2.entrySet()) {
+            result.put(entry.getKey(), entry.getValue());
+        }
         return result;
     }
 
