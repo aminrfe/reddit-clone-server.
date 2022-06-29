@@ -121,4 +121,15 @@ public interface Comment {
         result.put("downvotes", votes.get("downvotes"));
         return Convertor.mapToString(result);
     }
+
+    default String genCommentId(Map<String, String> data) {
+        Map<String, String> lastPost = Database.getDatabase().getTable("CommentsDetail").selectLast();
+        
+        if (lastPost.isEmpty()) {
+            return "c1";
+        }
+        String lastId = lastPost.get("id").replace("c", "");
+        int id = Integer.parseInt(lastId) + 1;
+        return "c" + id;
+    }
 }

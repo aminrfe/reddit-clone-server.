@@ -13,12 +13,14 @@ public interface Post {
         Database.getDatabase().getTable("PostsDetail").insert(data);
 
         Map<String, String> emptyVotes = new HashMap<>();
+        emptyVotes.put("id", data.get("id"));
         emptyVotes.put("upvotes", "-");
         emptyVotes.put("downvotes", "-");
         Database.getDatabase().getTable("PostsVotes").insert(emptyVotes);
 
         Map<String, String> emptyComments = new HashMap<>();
-        emptyComments.put("comments", data.get("-"));
+        emptyComments.put("id", data.get("id"));
+        emptyComments.put("comments", "-");
         Database.getDatabase().getTable("PostsComments").insert(emptyComments);
 
         return "Done";
@@ -130,8 +132,11 @@ public interface Post {
             return newData.get("id").equals(data.get("id"));
         };
         Map<String, String> result = Database.getDatabase().getTable("PostsDetail").selectFirst(condition);
+        System.err.println(result);
         result = Convertor.merge(result, Database.getDatabase().getTable("PostsVotes").selectFirst(condition));
+        System.err.println(result);
         result = Convertor.merge(result, Database.getDatabase().getTable("PostsComments").selectFirst(condition));
+        System.err.println(result);
         
         return Convertor.mapToString(result);
     }
@@ -176,5 +181,16 @@ public interface Post {
             idMap.put("id", id);
             return new Controller().getComment(idMap);
         }).collect(Collectors.joining("\n"));
+    }
+
+    default String genPostId(Map<String, String> data) {
+        Map<String, String> lastPost = Database.getDatabase().getTable("PostsDetail").selectLast();
+        
+        if (lastPost.isEmpty()) {
+            return "p1";
+        }
+        String lastId = lastPost.get("id").replace("p", "");
+        int id = Integer.parseInt(lastId) + 1;
+        return "p" + id;
     }
 }
