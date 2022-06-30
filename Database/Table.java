@@ -22,6 +22,11 @@ public class Table {
         } else if (name.startsWith("Forum")) {
             innerFolder = "Forum";
         }
+        try {
+            path = Files.createDirectories(Paths.get("Database" + File.separator + innerFolder));
+        } catch (IOException e) {
+            System.err.println("Error creating folder");
+        }
 
         path = Paths.get("Database" + File.separator + innerFolder + File.separator + name + ".txt");
         System.err.println("path: " + path);
@@ -155,7 +160,8 @@ public class Table {
         Map<String, String> result = new HashMap<>();
         try {
             List<String> lines = Files.readAllLines(path);
-            if (lines.size() > 1) {
+            System.err.println("lines: " + lines.size());
+            if (!lines.isEmpty()) {
                 result = Convertor.stringToMap(lines.get(lines.size() - 1));
             }
         } catch (IOException e) {
