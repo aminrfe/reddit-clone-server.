@@ -164,6 +164,20 @@ public class Table {
         return result;
     }
 
+    public void replace(String oldUsername, String newUsername) {
+        try {
+            List<String> lines = Files.readAllLines(path);
+            for (int i = 0; i < lines.size(); i++) {
+                if (lines.get(i).contains(oldUsername)) {
+                    lines.set(i, lines.get(i).replaceAll(oldUsername, newUsername));
+                }
+            }
+            Files.write(path, lines);
+        } catch (IOException e) {
+            System.err.println("Could not replace data");
+        }
+    }
+
 
     public List<Map<String, String>> getAll() {
         ArrayList<Map<String, String>> data = new ArrayList<Map<String, String>>();
