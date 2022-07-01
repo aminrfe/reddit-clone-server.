@@ -155,8 +155,8 @@ public interface User {
         Database.getDatabase().getTable("UsersPosts").replace(oldUsername, newUsername);
         Database.getDatabase().getTable("UsersForums").replace(oldUsername, newUsername);
 
-        Database.getDatabase().getTable("PostDetail").replace(oldUsername, newUsername);
-        Database.getDatabase().getTable("PostVotes").replace(oldUsername, newUsername);
+        Database.getDatabase().getTable("PostsDetail").replace(oldUsername, newUsername);
+        Database.getDatabase().getTable("PostsVotes").replace(oldUsername, newUsername);
 
         Database.getDatabase().getTable("ForumsDetail").replace(oldUsername, newUsername);
 

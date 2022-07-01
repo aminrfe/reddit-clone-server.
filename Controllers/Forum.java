@@ -30,7 +30,7 @@ public interface Forum {
         return "Done";
     }
 
-    static String updateForumDetail(Map<String, String> data) {
+    default String updateForumDetail(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
             return newData.get("name").equals(data.get("name"));
         };
@@ -39,7 +39,7 @@ public interface Forum {
         return "Done";
     }
 
-    static String updateForumPosts(Map<String, String> data) {
+    default String updateForumPosts(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
             return newData.get("name").equals(data.get("name"));
         };
