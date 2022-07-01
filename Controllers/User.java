@@ -64,48 +64,6 @@ public interface User {
         return "Done";
     }
 
-    default String deleteUser(Map<String, String> data) {
-        Predicate<Map<String, String>> condition = (newData) -> {
-            return newData.get("username").equals(data.get("username"));
-        };
-
-        Database.getDatabase().getTable("UsersAccount").delete(condition);
-        Database.getDatabase().getTable("UsersPosts").delete(condition);
-        Database.getDatabase().getTable("UsersForums").delete(condition);
-        return "Done";
-    }
-
-
-    default String deleteUserSavedPost(Map<String, String> data) {
-        Predicate<Map<String, String>> condition = (newData) -> {
-            return newData.get("username").equals(data.get("username"));
-        };
-        AbstractMap.SimpleEntry<String, String> entry = new AbstractMap.SimpleEntry<>("savedPosts", data.get("savedPosts"));
-
-        Database.getDatabase().getTable("UsersPosts").delete(entry, condition);
-        return "Done";
-    }
-
-    default String deleteUserForum(Map<String, String> data) {
-        Predicate<Map<String, String>> condition = (newData) -> {
-            return newData.get("username").equals(data.get("username"));
-        };
-        AbstractMap.SimpleEntry<String, String> entry = new AbstractMap.SimpleEntry<>("followedForums", data.get("followedForums"));
-
-        Database.getDatabase().getTable("UsersForums").delete(entry, condition);
-        return "Done";
-    }
-
-    default String deleteUserFavoriteForum(Map<String, String> data) {
-        Predicate<Map<String, String>> condition = (newData) -> {
-            return newData.get("username").equals(data.get("username"));
-        };
-        AbstractMap.SimpleEntry<String, String> entry = new AbstractMap.SimpleEntry<>("favoriteForums", data.get("favoriteForums"));
-
-        Database.getDatabase().getTable("UsersForums").delete(entry, condition);
-        return "Done";
-    }
-
     default String getUserAccount(Map<String, String> data) {
         Predicate<Map<String, String>> condition = (newData) -> {
             return newData.get("username").equals(data.get("username"));
@@ -192,7 +150,6 @@ public interface User {
     default String changeUserUsername(Map<String, String> data) {
         String oldUsername = data.get("oldUsername");
         String newUsername = data.get("newUsername");
-        
 
         Database.getDatabase().getTable("UsersAccount").replace(oldUsername, newUsername);
         Database.getDatabase().getTable("UsersPosts").replace(oldUsername, newUsername);
