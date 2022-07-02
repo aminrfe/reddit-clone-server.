@@ -66,4 +66,4 @@ The user can see posts that he/she has saved.
 ### Application repositoriy
 
 You can visit the repository of the application here:
-[**App**](https://github.com/Erfun-ABD/reddit-clone-ui)
+[**App**](https://github.com/aminrfe/reddit-clone-ui)
